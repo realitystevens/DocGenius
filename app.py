@@ -44,7 +44,7 @@ def getAnswer(prompt):
 
     
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def index():
     return render_template("index.html")
 
