@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docgenix - PDF AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Docgenix - PDF AI Assistant</h2>
+        <form id="pdfForm" enctype="multipart/form-data">
+            <input type="file" id="pdfFile" required accept="application/pdf">
+            <input type="text" id="question" required placeholder="Enter your question...">
+            <button type="button" id="submitBtn">Submit</button>
+        </form>
+        <div class="output">
+            <h3>Extracted Text:</h3>
+            <p id="extractedText"></p>
+            <h3>AI Answer:</h3>
+            <p id="answer"></p>
+        </div>
+    </div>
+</body>
+</html>
