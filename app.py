@@ -1,156 +1,95 @@
 import os
-import sys
 import PyPDF2
+import cloudinary
+import cloudinary.uploader
+import google.generativeai as genai
+from flask import Flask, request, render_template
+
 from dotenv import load_dotenv
-from google.generativeai import genai
-from flask import Flask, request, jsonify
-
-
-
 load_dotenv()
 
+
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-
-class DocGenius:
-    def __init__(self):
-        """ Configure Gemini AI API """
-        try:
-            GEMINI_APIKEY = os.getenv("GEMINI_APIKEY")
-            if not GEMINI_APIKEY:
-                raise ValueError("Gemini API key not found. Please configure GEMINI_APIKEY in .env file")
-            
-            genai.configure(api_key = GEMINI_APIKEY)
-
-            """ Initialize the model """
-            self.model = genai.GenerativeModel("gemini-1.5-pro-latest")
-            self.pdfText = ""
-        except Exception as e:
-            print(f"Initialization error: {e}")
-            sys.exit(1)
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel("gemini-1.5-pro-latest")
 
 
 
-    def extractText(self, pdfPath):
-        """
-        Extract text from PDF file.
 
-        Args:
-            pdfPath (str): Path to PDF file
-
-        Returns:
-            str: Extracted text from PDF file
-        """
-        try:
-            text = ""
-            with open(pdfPath, "rb") as file:
-                reader = PyPDF2.PdfReader(file)
-
-                for page in reader.pages:
-                    pageText = page.extract_text()
-
-                    if pageText:
-                        text += pageText + "\n\n"
-            return text
-        except Exception as e:
-            return f"Error extracting text: {e}"
+def extractPDFText(pdfPath):
+    try:
+        text = ""
+        with open(pdfPath, "rb") as file:
+            reader = PyPDF2.PdfReader(file)
+            for page in reader.pages:
+                pageText = page.extract_text()
+                if pageText:
+                    text += "\n\n" + pageText
+        return text
+    except Exception as e:
+        return f"Error extracting text: {e}"
 
 
+def getAnswer(prompt):
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"Error getting answer: {e}"
 
-    def loadPDF(self, pdfPath):
-        """
-        Load and process a PDF file
-
-        Args:
-            pdfPath (str): Path to the PDF file
-        """
-        # Validate if PDF file exists
-        if not os.path.exists(pdfPath):
-            return f"Error: File {pdfPath} does not exist"
-
-        # Set up extracted text
-        self.pdfText = self.extractText(pdfPath)
-
-        # Check if text extraction was successful
-        if not self.pdfText:
-            return "Failed to extract text from PDF file on loading the file"
-
-        return "Successfully loaded PDF and extracted text. Total characters: {len(self.pdfText)}"
     
 
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return render_template("index.html")
 
-    def askQuestion(self, question):
-        """
-        Ask a question about the loaded PDF
 
-        Args:
-            question (str): Question to ask
+@app.route("/api/v1", methods=["POST"])
+def api():
+    extractedPDFText = ""
+    answer = ""
+    file = request.files.get("file")
+    question = request.form.get("question")
 
-        Returns:
-            str: Answer from the AI
-        """
-        # Validate if PDF is loaded
-        if not self.pdfText:
-            return "Please load a PDF first using 'load [path to PDF]'"
+    if file:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(file_path)
+        extractedPDFText = extractPDFText(file_path)
 
-        try:
-            # Prepare the prompt
-            prompt = f"""
+    if question and extractedPDFText:
+        prompt = f"""
             You are an expert at extracting precise information from documents. 
             Use the following document text to answer the question as accurately as possible.
             If the answer is not in the document, say "I cannot find the answer in the provided document."
 
             Document Text:
-            {self.pdfText}
+            {extractedPDFText}
 
             Question: {question}
 
             Answer:
-            """
+        """
+        answer = getAnswer(prompt)
 
-            response = self.model.generate_content(prompt)
+    if answer == "429 Resource has been exhausted (e.g. check quota).":
+        answer = "API rate limit exceeded. Please try again later."
 
-            return response.text.strip()
+    return {
+        "extractedPDFText": extractedPDFText,
+        "answer": answer
+    }
 
-        except Exception as e:
-            return f"Error processing question: {e}"
-
-
-
-
-""" Initialize the DocGenius class """
-project = DocGenius()
-
-
-@app.route("/")
-def index():
-    return "DocGenius API"
-
-
-@app.route("/upload", methods=["POST"])
-def upload():
-    data = request.json
-    pdfPath = data.get("pdfPath")
-    if not pdfPath:
-        return jsonify({"error": "PDF path is required"}), 400
-    result = project.loadPDF(pdfPath)
-
-    return jsonify({"message": result})
-
-
-@app.route("/ask", methods=["POST"])
-def ask():
-    data = request.json
-    question = data.get("question")
-    if not question:
-        return jsonify({"error": "Question is required"}), 400
-    answer = project.askQuestion(question)
-    
-    return jsonify({"answer": answer})
 
 
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if os.getenv("ENV") == "development":
+        app.run(debug=True)
+    app.run(debug=False)
