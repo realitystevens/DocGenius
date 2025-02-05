@@ -1,7 +1,5 @@
 import os
 import PyPDF2
-import cloudinary
-import cloudinary.uploader
 import google.generativeai as genai
 from flask import Flask, request, render_template
 
