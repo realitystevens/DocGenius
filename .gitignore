@@ -1,5 +1,7 @@
 __pycache__
 
 venv
-
 .env
+
+conversations.db
+extracted_files.db
