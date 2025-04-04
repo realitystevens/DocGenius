@@ -95,7 +95,38 @@ def getAnswer(extracted_text, question):
         }
 
 
-def logConversation():
+def saveConversations(user_question, ai_answer):
+    """
+    Save the conversation (user question and AI answer) to the SQLite database.
+    """
+    db_path = os.path.join(os.getcwd(), "conversations.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Create table if it doesn't exist
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS conversations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_question TEXT NOT NULL,
+            ai_answer TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # Insert conversation into database
+    cursor.execute("""
+        INSERT INTO conversations (user_question, ai_answer)
+        VALUES (?, ?)
+    """, (user_question, ai_answer))
+
+    # Commit transaction and close connection
+    conn.commit()
+    conn.close()
+
+    return user_question, ai_answer
+
+
+def logConversations():
     db_path = os.path.join(os.getcwd(), "conversations.db")
     if not os.path.exists(db_path):
         return jsonify({
