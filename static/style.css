@@ -107,11 +107,12 @@ aside {
 
 .main_container {
     padding: 20px;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 100vh;
+    height: 100vh; */
+    display: grid;
 }
 
 .header {
@@ -130,8 +131,14 @@ aside {
     font-size: 1.5rem;
 }
 
+.main_base {
+    display: grid;
+}
+
 .chat_conversation {
     width: 100%;
+    position: absolute;
+    bottom: 250px
 }
 
 .init_chat_title {
@@ -145,6 +152,8 @@ aside {
 .chat_gen_resource {
     display: grid;
     gap: 20px;
+    position: fixed;
+    bottom: 0px;
 }
 
 .pdf_display_list {
