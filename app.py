@@ -2,7 +2,7 @@ import os
 import io
 import sqlite3
 from flask import Flask, request, render_template, jsonify
-from utils.app_utils import logFiles, getAnswer, logConversation
+from utils.app_utils import logFiles, getAnswer, saveConversations, logConversations
 from utils.extractText import extractPDFText, extractTXTText, extractDOCXText, extractPPTXText
 
 from dotenv import load_dotenv
@@ -91,7 +91,7 @@ def get_conversations():
     Retrieve all conversations from the SQLite database.
     """
 
-    conversations = logConversation()
+    conversations = logConversations()
 
     return jsonify({
         "conversations": conversations,
@@ -107,7 +107,7 @@ def askAI():
     """
     extractedFileText = request.form.get("extractedFileText")
     user_question = request.form.get("question")
-    result = ""
+    ai_response = ""
 
     if not extractedFileText:
         return jsonify({
@@ -122,43 +122,20 @@ def askAI():
         })
 
     if user_question and extractedFileText:
-        result = getAnswer(extractedFileText, user_question)
+        ai_response = getAnswer(extractedFileText, user_question)
 
-    if result.get("status_code") == 429:
+    if ai_response.get("status_code") == 429:
         return jsonify({
             "answer": "Rate limit exceeded. Please try again later.",
             "status_code": 429,
         })
 
-    # Save the conversation to the database
-    db_path = os.path.join(os.getcwd(), "conversations.db")
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-
-    # Create the table if it doesn't exist
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS conversations (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_question TEXT NOT NULL,
-            ai_answer TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-
-    # Insert the conversation into the database
-    cursor.execute("""
-        INSERT INTO conversations (user_question, ai_answer)
-        VALUES (?, ?)
-    """, (user_question, result.get("answer")))
-
-    # Commit the transaction and close the connection
-    conn.commit()
-    conn.close()
+    user_question, result = saveConversations(user_question, ai_response.get("answer"))
 
     return jsonify({
         "extractedFileText": extractedFileText,
         "user_question": user_question,
-        "answer": result.get("answer"),
+        "answer": result,
         "status_code": 200,
     })
 
