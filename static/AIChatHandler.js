@@ -1,8 +1,8 @@
 const AISubmitBtn = document.getElementById("AISubmitBtn");
 const extractedFileTextInput = document.getElementById("extractedFileText");
 const questionInput = document.getElementById("question");
-const answer = document.getElementById("answer");
 const initChatTitle = document.querySelector(".init_chat_title");
+const chatContainer = document.querySelector(".chat_conversation_content")
 
 
 
@@ -24,7 +24,24 @@ async function fetchAIChatData() {
 
         const data = await response.json();
         console.log(data.conversations);
-        initChatTitle.innerHTML = `${data.conversations}`;
+
+        if (data.conversations.length === 0) {
+            initChatTitle.textContent = "Start a new conversation";
+        }
+        
+        data.conversations.forEach(conversation => {
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "user_message";
+            userMessageDiv.textContent = conversation.user_question;
+        
+            const aiResponseDiv = document.createElement("div");
+            aiResponseDiv.className = "ai_response";
+            aiResponseDiv.textContent = conversation.ai_answer;
+        
+            // Append the user message and AI response to the chat container
+            chatContainer.appendChild(userMessageDiv);
+            chatContainer.appendChild(aiResponseDiv);
+        });
 
     } catch (error) {
         console.error("Error fetching AI chat data:", error);
@@ -58,6 +75,7 @@ async function askAI(e) {
         console.log(data);
 
         questionInput.value = ""; // Clear the question input
+        fetchAIChatData(); // Fetch the updated chat data
     } catch (error) {
         console.error("Error asking AI:", error);
     }
@@ -73,4 +91,4 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('Chat conversation data loaded successfully.');
 });
 
-export { extractedFileTextInput, questionInput, answer };
+export { extractedFileTextInput, questionInput };
