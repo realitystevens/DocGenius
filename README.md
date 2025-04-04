@@ -4,7 +4,7 @@ An AI Assistance that helps you get information from an uploaded PDF file.
 
 Chat with your PDF file and get responses. Build using Python (Flask), Vanilla Javascript and Gemini AI API.
 
-# Features
+### Features
 
 - **Upload Files**: Upload PDF, TXT, DOCX, or PPTX files to extract their content.
 - **Chat with Files**: Ask questions about the uploaded files and get AI-generated responses.
@@ -12,14 +12,14 @@ Chat with your PDF file and get responses. Build using Python (Flask), Vanilla J
 - **Recent Chats**: Access previous conversations for reference.
 - **Dynamic Content**: All file and chat data are dynamically loaded and updated.
 
-# Technologies Used
+### Technologies Used
 
 - **Backend**: Python (Flask)
 - **Frontend**: HTML, CSS, Vanilla JavaScript
 - **Database**: SQLite for storing extracted file content and chat conversations.
 - **AI Integration**: Gemini AI API for generating responses to user queries.
 
-# Installation
+### Installation
 
 1. Clone the repository:
     ```bash
