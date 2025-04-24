@@ -1,0 +1,64 @@
+/* Modal overlay to darken the background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* Login modal styling */
+.login-modal {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 500px;
+}
+
+.login-modal h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    font-family: var(--font-family);
+}
+
+.login-modal label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+    font-family: var(--font-family);
+}
+
+.login-modal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: var(--font-family);
+}
+
+.login-modal .login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
+.login-modal .login-btn:hover {
+    background-color: #0056b3;
+}

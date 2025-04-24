@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --font-family: 'Inter', sans-serif;
+    --primary-gray: #f4f6f5;
+    --secondary-gray: #e9e9e9;
+    --white: #ffffff;
+    --blue: #005af9;
+    --black: #202124;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--black);
+    background-color: var(--white);
+}
+
+button {
+    cursor: pointer;
+}
+
+ul {
+    padding: 0px;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: var(--blue);
+}

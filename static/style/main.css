@@ -1,0 +1,104 @@
+.container {
+    display: block;
+}
+
+
+
+
+/* Main Content */
+
+main {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.header {
+    padding: 20px;
+    border-bottom: 1px solid var(--secondary-gray);
+    background-color: var(--white);
+    display: grid;
+}
+
+.header_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main_title {
+    font-size: 1rem;
+    font-family: var(--font-family);
+}
+
+.chat_resources {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid var(--secondary-gray);
+    height: 100%;
+    text-align: center;
+    gap: 20px;
+}
+
+.file_display {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file_display_list {
+    cursor: pointer;
+    display: grid;
+    border: 1px solid var(--secondary-gray);
+    background-color: var(--primary-gray);
+    border-radius: 10px;
+    padding: 10px;
+    width: 120px;
+    height: 120px;
+    margin: 0px 15px 0px 0px;
+    box-sizing: border-box;
+}
+
+.chatbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid var(--secondary-gray);
+    border-radius: 50px;
+    background-color: var(--white);
+    text-align: center;
+}
+
+#extractedFileText {
+    display: none;
+}
+
+.chatbox_input {
+    padding: 20px;
+    background-color: inherit;
+    border: 0px;
+    width: 100%;
+    max-width: 600px;
+    font-family: var(--font-family);
+    font-size: 1rem;
+}
+
+.chatbox_send {
+    background-color: inherit;
+    border: 0px;
+}
+
+
+
+@media only screen and (min-width: 760px) {
+    .menu_open {
+        display: none !important;
+    }
+}
+

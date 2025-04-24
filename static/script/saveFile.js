@@ -1,4 +1,4 @@
-import loadFiles from "./fileHandler.js";
+import loadFiles from "./loadFiles.js";
 
 const saveFileBtn = document.getElementById("saveFileBtn");
 const fileInput = document.getElementById("file");
@@ -14,7 +14,7 @@ saveFileBtn.addEventListener("click", async function (e) {
 
     if (fileInput.files.length > 0) {
         try {
-            const response = await fetch("/api/v1/save_file", {
+            const response = await fetch("/api/v1/process_file", {
                 method: "POST",
                 body: formData,
             });
@@ -30,7 +30,7 @@ saveFileBtn.addEventListener("click", async function (e) {
             fileInput.value = ""; // Clear the file input
             setTimeout(() => {
                 fileSubmitServerMessage.textContent = "";
-            }, 2000);
+            }, 1000);
         } catch (error) {
             console.error('Error saving file', error);
             fileSubmitServerMessage.textContent = "Error saving file (Check console for more details). You can give it a try and try again.";

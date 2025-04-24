@@ -1,7 +1,7 @@
 import { extractedFileTextInput } from "./AIChatHandler.js";
 
-const fileList = document.getElementById("fileList");
-const fileDisplayList = document.getElementById("fileDisplayList");
+const sidebarFileList = document.getElementById("sidebarFileList")
+const fileDisplay = document.getElementById("fileDisplay")
 
 
 
@@ -14,52 +14,62 @@ async function loadFiles() {
                 Status: ${response.status}
             `);
         }
+
         const data = await response.json();
+
         if (data.files && Array.isArray(data.files)) {
-            fileList.innerHTML = ""; // Clear current list to avoid duplicates
+            // Clear current list to avoid duplicates
+            fileDisplay.innerHTML = "";
+            sidebarFileList.innerHTML = "";
+            
             data.files.forEach(file => {
-                // Create a list item for each file in aside bar
-                const fileListItem = document.createElement('li');
-                fileListItem.className = "aside_list_item";
-                fileListItem.innerHTML = 
+                // Create list item for each file in the sidebar
+                const sidebarFileListItem = document.createElement('li');
+                sidebarFileListItem.className = "aside_list_item";
+                sidebarFileListItem.innerHTML = 
                     `
                         <span class="material-symbols-outlined">picture_as_pdf</span>
                         <p class="aside_list_item_text">${file.file_name}</p>
                         <span class="material-symbols-outlined more_vert">more_vert</span>
                     `
                 ;
-                // Populate file extracted text to extractedFileTextInput when clicked
-                fileListItem.addEventListener('click', () => {
-                    console.log(`File Selected from aside bar: ${file.file_name}`);
-                    extractedFileTextInput.value = file.extracted_text;
-                });
-                fileList.appendChild(fileListItem);
+                sidebarFileList.appendChild(sidebarFileListItem);
 
-                // Create a list item for each file in the file display container
-                const fileDisplayListItem = document.createElement('li');
-                fileDisplayListItem.className = "pdf_display_item";
-                fileDisplayListItem.innerHTML = 
+                // Create list item for each file in file display container
+                const fileDisplayList = document.createElement('li');
+                fileDisplayList.className = "file_display_list";
+                fileDisplayList.innerHTML = 
                     `
                         <span class="material-symbols-outlined">picture_as_pdf</span>
                         <p class="pdfFileName">${file.file_name}</p>
                     `
                 ;
+                fileDisplay.appendChild(fileDisplayList)
+
                 // Populate file extracted text to extractedFileTextInput when clicked
-                fileDisplayListItem.addEventListener('click', () => {
-                    console.log(`File Selected from display container: ${file.file_name}`);
+                sidebarFileListItem.addEventListener('click', () => {
+                    console.log(`File Selected from sidebar: ${file.file_name}`);
                     extractedFileTextInput.value = file.extracted_text;
                 });
-                fileDisplayList.appendChild(fileDisplayListItem);
+
+                fileDisplayList.addEventListener('click', () => {
+                    console.log(`File Selected from file display container: ${file.file_name}`);
+                    extractedFileTextInput.value = file.extracted_text;
+                });
             });
         } else {
             let errorMessage = data.error.replace(/^"|"$/g, ''); // Removes leading and trailing quotes
-            fileList.innerHTML = `<li>${errorMessage}</li>`;
+            sidebarFileList.innerHTML = `<li>${errorMessage}</li>`;
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
-        fileList.innerHTML = `<li>Error loading files. Please try again later.</li>`;
+        sidebarFileList.innerHTML = `<li>Error loading files. Please try again later.</li>`;
     }
 }
+
+
+
+
 
 // Call function to retrieve files when DOMContent loads
 document.addEventListener('DOMContentLoaded', () => {
