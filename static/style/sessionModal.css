@@ -1,64 +1,147 @@
-/* Modal overlay to darken the background */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-    display: none; /* Hidden by default */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it appears above other elements */
-}
+/* DocGenius Modal Styles - Updated for v2.0 */
 
-/* Login modal styling */
+/* Note: Main modal styles are now in main.css */
+/* This file contains legacy login modal styles for compatibility */
+
+/* Legacy login modal (if still used) */
 .login-modal {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--color-bg-primary);
+    padding: var(--spacing-8);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
     text-align: center;
-    width: 500px;
+    width: 100%;
+    max-width: 400px;
+    margin: var(--spacing-4);
 }
 
 .login-modal h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-    font-family: var(--font-family);
+    margin-bottom: var(--spacing-6);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
 }
 
 .login-modal label {
     display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #555;
-    font-family: var(--font-family);
+    margin-bottom: var(--spacing-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-align: left;
 }
 
 .login-modal input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: var(--font-family);
+    padding: var(--spacing-3) var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast);
+}
+
+.login-modal input:focus {
+    outline: none;
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+.login-modal input::placeholder {
+    color: var(--color-text-muted);
 }
 
 .login-modal .login-btn {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
+    padding: var(--spacing-3) var(--spacing-6);
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
     cursor: pointer;
-    font-family: var(--font-family);
+    transition: all var(--transition-fast);
 }
 
-.login-modal .login-btn:hover {
-    background-color: #0056b3;
+.login-modal .login-btn:hover:not(:disabled) {
+    background-color: var(--color-primary-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.login-modal .login-btn:disabled {
+    background-color: var(--color-gray-300);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Form groups for better spacing */
+.login-modal .form-group {
+    margin-bottom: var(--spacing-4);
+    text-align: left;
+}
+
+.login-modal .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Error states */
+.login-modal .input-error {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px var(--color-error-bg);
+}
+
+.login-modal .error-message {
+    display: block;
+    margin-top: var(--spacing-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-error);
+}
+
+/* Success states */
+.login-modal .input-success {
+    border-color: var(--color-success);
+    box-shadow: 0 0 0 3px var(--color-success-bg);
+}
+
+/* Loading state */
+.login-modal .login-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.login-modal .login-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: var(--color-white);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .login-modal {
+        padding: var(--spacing-6);
+        margin: var(--spacing-2);
+    }
+    
+    .login-modal h2 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-4);
+    }
 }
