@@ -11,6 +11,8 @@
     position: relative;
     z-index: var(--z-index-sticky);
     transition: transform var(--transition-normal);
+    flex-shrink: 0;
+    overflow: hidden;
 }
 
 .sidebar-container {
@@ -25,9 +27,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-4) var(--spacing-5);
+    padding: var(--spacing-4);
     border-bottom: 1px solid var(--color-border);
     background-color: var(--color-bg-primary);
+    flex-shrink: 0;
 }
 
 .sidebar-toggle {
@@ -70,10 +73,11 @@
 
 /* Sidebar Sections */
 .sidebar-section {
-    flex: 1;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 }
 
 .sidebar-section:not(:last-child) {
@@ -85,9 +89,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-4) var(--spacing-5);
+    padding: var(--spacing-3) var(--spacing-4);
     background-color: var(--color-bg-primary);
     border-bottom: 1px solid var(--color-border-light);
+    flex-shrink: 0;
 }
 
 .section-title {
@@ -119,28 +124,32 @@
 
 /* File List */
 .file-list-container {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 }
 
 .file-list {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: var(--spacing-2) 0;
+    min-height: 0;
 }
 
 .file-item {
     display: flex;
     align-items: center;
     gap: var(--spacing-3);
-    padding: var(--spacing-3) var(--spacing-5);
+    padding: var(--spacing-3) var(--spacing-4);
     margin: var(--spacing-1) var(--spacing-2);
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all var(--transition-fast);
     color: var(--color-text-secondary);
+    min-width: 0;
 }
 
 .file-item:hover,
@@ -211,14 +220,16 @@
 
 /* Upload Area */
 .upload-area {
-    padding: var(--spacing-4) var(--spacing-5);
+    padding: var(--spacing-3) var(--spacing-4);
     border-top: 1px solid var(--color-border-light);
+    flex-shrink: 0;
+    background-color: var(--color-bg-secondary);
 }
 
 .upload-dropzone {
     border: 2px dashed var(--color-border);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-6);
+    padding: var(--spacing-3);
     text-align: center;
     transition: all var(--transition-fast);
     cursor: pointer;
@@ -231,9 +242,9 @@
 }
 
 .upload-dropzone .material-symbols-outlined {
-    font-size: 32px;
+    font-size: 24px;
     color: var(--color-text-muted);
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--spacing-1);
 }
 
 .upload-text {
@@ -292,27 +303,31 @@
 
 /* Conversation List */
 .conversation-list-container {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 }
 
 .conversation-list {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: var(--spacing-2) 0;
+    min-height: 0;
 }
 
 .conversation-item {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-3);
-    padding: var(--spacing-3) var(--spacing-5);
+    padding: var(--spacing-3) var(--spacing-4);
     margin: var(--spacing-1) var(--spacing-2);
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all var(--transition-fast);
+    min-width: 0;
 }
 
 .conversation-item:hover {
@@ -364,10 +379,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-8) var(--spacing-6);
+    padding: var(--spacing-6) var(--spacing-4);
     text-align: center;
     color: var(--color-text-muted);
     flex: 1;
+    min-height: 150px;
 }
 
 .empty-state .material-symbols-outlined {
@@ -390,9 +406,11 @@
 
 /* Sidebar Footer */
 .sidebar-footer {
-    padding: var(--spacing-4) var(--spacing-5);
+    padding: var(--spacing-2) var(--spacing-3);
     border-top: 1px solid var(--color-border);
     background-color: var(--color-bg-primary);
+    flex-shrink: 0;
+    margin-top: auto;
 }
 
 .app-info {
@@ -400,16 +418,17 @@
 }
 
 .app-name {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
-    margin: 0 0 var(--spacing-1) 0;
+    margin: 0;
 }
 
 .app-credits {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
-    margin: 0 0 var(--spacing-2) 0;
+    margin: 0;
+    line-height: 1.4;
 }
 
 .app-credits a {
@@ -422,18 +441,19 @@
 }
 
 .app-links {
-    margin: 0;
+    margin: var(--spacing-1) 0 0 0;
 }
 
 .app-links a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     border-radius: var(--radius-full);
     color: var(--color-text-muted);
     transition: all var(--transition-fast);
+    font-size: 14px;
 }
 
 .app-links a:hover {
@@ -468,29 +488,29 @@
     }
     
     .upload-dropzone {
-        padding: var(--spacing-4);
+        padding: var(--spacing-3);
     }
     
     .sidebar-header {
-        padding: var(--spacing-3) var(--spacing-4);
+        padding: var(--spacing-3);
     }
     
     .section-header {
-        padding: var(--spacing-3) var(--spacing-4);
+        padding: var(--spacing-2) var(--spacing-3);
     }
     
     .file-item,
     .conversation-item {
-        padding: var(--spacing-3) var(--spacing-4);
+        padding: var(--spacing-2) var(--spacing-3);
         margin: var(--spacing-1);
     }
     
     .upload-area {
-        padding: var(--spacing-3) var(--spacing-4);
+        padding: var(--spacing-2) var(--spacing-3);
     }
     
     .sidebar-footer {
-        padding: var(--spacing-3) var(--spacing-4);
+        padding: var(--spacing-2);
     }
 }
 
@@ -532,23 +552,27 @@
 
 /* Scrollbar Styling */
 .file-list::-webkit-scrollbar,
-.conversation-list::-webkit-scrollbar {
+.conversation-list::-webkit-scrollbar,
+.messages-container::-webkit-scrollbar {
     width: 6px;
 }
 
 .file-list::-webkit-scrollbar-track,
-.conversation-list::-webkit-scrollbar-track {
+.conversation-list::-webkit-scrollbar-track,
+.messages-container::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .file-list::-webkit-scrollbar-thumb,
-.conversation-list::-webkit-scrollbar-thumb {
+.conversation-list::-webkit-scrollbar-thumb,
+.messages-container::-webkit-scrollbar-thumb {
     background-color: var(--color-gray-300);
     border-radius: var(--radius-full);
 }
 
 .file-list::-webkit-scrollbar-thumb:hover,
-.conversation-list::-webkit-scrollbar-thumb:hover {
+.conversation-list::-webkit-scrollbar-thumb:hover,
+.messages-container::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-gray-400);
 }
 

@@ -96,11 +96,12 @@ class DocGeniusApp {
             this.chatHandler?.loadConversations()
         ]);
 
+        // Don't auto-select files - let user choose
         // Check if there are existing files and auto-select the first one
-        const files = this.fileHandler?.getAllFiles();
-        if (files && files.length > 0) {
-            this.fileHandler?.selectFile('file_0');
-        }
+        // const files = this.fileHandler?.getAllFiles();
+        // if (files && files.length > 0) {
+        //     this.fileHandler?.selectFile('file_0');
+        // }
 
         // Set up auto-save if enabled
         if (this.uiHandler?.getSettings().autoSave) {
@@ -184,16 +185,29 @@ class DocGeniusApp {
                 chatInputContainer.hidden = false;
             }
             
-            // Update welcome screen
+            // Keep welcome screen visible until first message
+            // Messages container should remain hidden until there are messages
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.hidden = true;
+            }
+            
+            // Show welcome screen initially
             const welcomeScreen = document.getElementById('welcomeScreen');
             if (welcomeScreen) {
-                welcomeScreen.hidden = true;
+                welcomeScreen.hidden = false;
             }
         } else {
             // Hide chat input if no file selected
             const chatInputContainer = document.getElementById('chatInputContainer');
             if (chatInputContainer) {
                 chatInputContainer.hidden = true;
+            }
+            
+            // Hide messages
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.hidden = true;
             }
             
             // Show welcome screen

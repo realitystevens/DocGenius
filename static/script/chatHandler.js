@@ -24,6 +24,11 @@ class ChatHandler {
         this.messagesContainer = document.getElementById('messagesContainer');
         this.typingIndicator = document.getElementById('typingIndicator');
         
+        // Ensure typing indicator is hidden initially
+        if (this.typingIndicator) {
+            this.typingIndicator.hidden = true;
+        }
+        
         // Input elements
         this.chatForm = document.getElementById('chatForm');
         this.chatInputContainer = document.getElementById('chatInputContainer');
@@ -215,9 +220,13 @@ class ChatHandler {
     }
 
     showChatInterface(show) {
-        if (this.welcomeScreen && this.chatMessages && this.chatInputContainer) {
+        if (this.welcomeScreen) {
             this.welcomeScreen.hidden = show;
+        }
+        if (this.chatMessages) {
             this.chatMessages.hidden = !show;
+        }
+        if (this.chatInputContainer) {
             this.chatInputContainer.hidden = !show;
         }
     }
