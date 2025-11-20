@@ -2,6 +2,7 @@
 DocGenius Vercel Serverless Function Entry Point
 """
 
+from app.config import create_app
 import sys
 import os
 
@@ -13,7 +14,6 @@ sys.path.insert(0, parent_dir)
 # Set environment for production
 os.environ['FLASK_ENV'] = 'production'
 
-from app.config import create_app
 
 # Create Flask application
 app = create_app('production')
